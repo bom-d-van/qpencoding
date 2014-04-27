@@ -17,14 +17,14 @@ import (
 	"io"
 )
 
-type Reader struct {
+type reader struct {
 	br   *bufio.Reader
 	rerr error  // last read error
 	line []byte // to be consumed before more of br
 }
 
 func NewReader(r io.Reader) io.Reader {
-	return &Reader{
+	return &reader{
 		br: bufio.NewReader(r),
 	}
 }
@@ -39,7 +39,7 @@ func fromHex(b byte) (byte, error) {
 	return 0, fmt.Errorf("multipart: invalid quoted-printable hex byte 0x%02x", b)
 }
 
-func (q *Reader) readHexByte(v []byte) (b byte, err error) {
+func (q *reader) readHexByte(v []byte) (b byte, err error) {
 	if len(v) < 2 {
 		return 0, io.ErrUnexpectedEOF
 	}
@@ -67,7 +67,7 @@ var (
 	softSuffix = []byte("=")
 )
 
-func (q *Reader) Read(p []byte) (n int, err error) {
+func (q *reader) Read(p []byte) (n int, err error) {
 	for len(p) > 0 {
 		if len(q.line) == 0 {
 			if q.rerr != nil {

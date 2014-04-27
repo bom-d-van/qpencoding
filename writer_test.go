@@ -152,7 +152,6 @@ func TestFullArticleReadWrite(t *testing.T) {
 	buf := bytes.NewBuffer([]byte{})
 	NewWriter(buf).Write(article)
 	in := string(article)
-	println(buf.String())
 	processed, err := ioutil.ReadAll(NewReader(buf))
 	if err != nil {
 		t.Errorf("Processing Error: %s (In: %q)", err, in)

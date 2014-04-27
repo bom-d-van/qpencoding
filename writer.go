@@ -6,16 +6,16 @@ import (
 	"strings"
 )
 
-type Writer struct {
+type writer struct {
 	w    io.Writer
 	line []byte
 }
 
-func NewWriter(w io.Writer) *Writer {
-	return &Writer{w: w}
+func NewWriter(w io.Writer) io.Writer {
+	return &writer{w: w}
 }
 
-func (w *Writer) Write(p []byte) (n int, err error) {
+func (w *writer) Write(p []byte) (n int, err error) {
 	for n < len(p) {
 		octet := p[n]
 		switch {
@@ -57,7 +57,7 @@ func (w *Writer) Write(p []byte) (n int, err error) {
 	return
 }
 
-func (w *Writer) appendCRLF(p []byte, n int) (int, error) {
+func (w *writer) appendCRLF(p []byte, n int) (int, error) {
 	if w.endWithWhiteSpace() {
 		sp := w.line[len(w.line)-1]
 		w.line = w.line[:len(w.line)-1]
@@ -88,17 +88,17 @@ func (w *Writer) appendCRLF(p []byte, n int) (int, error) {
 	return n, w.flush()
 }
 
-func (w *Writer) endWithWhiteSpace() bool {
+func (w *writer) endWithWhiteSpace() bool {
 	return len(w.line) > 0 && (w.line[len(w.line)-1] == '\t' || w.line[len(w.line)-1] == ' ')
 }
 
-func (w *Writer) appendInHex(p []byte) {
+func (w *writer) appendInHex(p []byte) {
 	dump := hex.EncodeToString(p)
 	dump = strings.ToUpper(dump)
 	w.line = append(w.line, '=', dump[0], dump[1])
 }
 
-func (w *Writer) flush() (err error) {
+func (w *writer) flush() (err error) {
 	_, err = w.w.Write(w.line)
 	if err != nil {
 		return
