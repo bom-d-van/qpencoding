@@ -35,6 +35,11 @@ func init() {
 
 func main() {
 	flag.Parse()
+	if version {
+		println("1.0")
+		return
+	}
+
 	if len(flag.Args()) == 0 || help {
 		fmt.Println(`qpencoding  --  Encode/decode file as Quoted-Printable (RFC 2045).  Call:
                 qpencoding [-e / -d] [file]
@@ -43,15 +48,8 @@ Options:
            -d, --decode      Decode Quoted-Printable encoded file
            -e, --encode      Encode file into Quoted-Printable
            -h, --help        Print this message
-           -v, --version     Print version number
+           -v, --version     Print version number`)
 
-by Van Hu`)
-
-		return
-	}
-
-	if version {
-		println("1.0")
 		return
 	}
 
