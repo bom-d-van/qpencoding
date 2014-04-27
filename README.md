@@ -12,4 +12,4 @@ go install github.com/bom-d-van/qpencoding/qpencoding.go
 qpencoding -h
 ```
 
-Documentation: godoc.org/github.com/bom-d-van/qpencoding
+Documentation: [godoc.org/github.com/bom-d-van/qpencoding](godoc.org/github.com/bom-d-van/qpencoding).
